@@ -1,5 +1,6 @@
-import React, { KeyboardEvent, useRef, useState } from "react";
+import React, { KeyboardEvent, useRef } from "react";
 import { FilterValuesType } from "./App";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 type TaskType = {
   id: string;
@@ -35,6 +36,9 @@ export function Todolist({ children, ...props }: PropsType) {
   const onCompletedClickHandler = () => props.changeFilter("completed");
 
   const onChangeRef = useRef<HTMLInputElement>(null);
+
+  const [listRef] = useAutoAnimate<HTMLUListElement>();
+
   return (
     <div>
       <h3>{props.title}</h3>
@@ -42,7 +46,7 @@ export function Todolist({ children, ...props }: PropsType) {
         <input ref={onChangeRef} onKeyDown={onKeyPressHandler} />
         <button onClick={addTask}>+</button>
       </div>
-      <ul>
+      <ul ref={listRef}>
         {props.tasks.map((t) => {
           const onClickHandler = () => props.removeTask(t.id);
 
